@@ -1,12 +1,9 @@
-import { useState } from "react"
 import { useRegister } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
+import { useAuthRegisterStore } from "../store/useAuthRegisterStore"
 
 const RegisterPage = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const { name, setName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword } = useAuthRegisterStore();
   
   const register = useRegister()
   const navigate = useNavigate()

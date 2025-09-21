@@ -1,10 +1,10 @@
-import { useState } from "react"
 import { useLogin } from "../hooks/useAuth"
 import { Link, useNavigate } from "react-router-dom"
+import { useAuthLoginStore } from "../store/useAuthLoginStore"
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const { email, setEmail, password, setPassword } = useAuthLoginStore();
+
     const login = useLogin()
     const navigate = useNavigate()
 

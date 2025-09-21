@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAddNote, useNotes } from "../hooks/useNotes";
 import { useUser } from "../hooks/useUser";
 import { useLogout } from "../hooks/useAuth";
@@ -6,12 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import ListItem from "../components/ListItem";
+import { useNoteStore } from "../store/useNoteStore";
 
 const HomePage = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState(null);
-  const [showCalendar, setShowCalendar] = useState(false);
+  const { title, description, dueDate, showCalendar, setTitle, setDescription, setDueDate, toggleCalendar, reset } = useNoteStore();
 
   const { data: user } = useUser();
   const { isPending, isError, data, error } = useNotes();
@@ -52,9 +49,7 @@ const HomePage = () => {
     const isoDate = dueDate ? new Date(dueDate).toISOString() : null;
 
     addNote.mutate({ title, description, dueDate: isoDate });
-    setTitle("");
-    setDescription("");
-    setDueDate("");
+    reset()
   };
 
   const handleLogout = () => {
@@ -104,7 +99,7 @@ const HomePage = () => {
               popoverTarget="rdp-popover"
               className="input input-bordered w-full mt-2"
               type="button"
-              onClick={() => setShowCalendar(!showCalendar)}
+              onClick={toggleCalendar}
             >
               {dueDate ? formatDate(dueDate) : "Pick a date"}
             </button>
@@ -117,7 +112,7 @@ const HomePage = () => {
                   selected={dueDate}
                   onSelect={(date) => {
                     setDueDate(date);
-                    setShowCalendar(false);
+                    toggleCalendar();
                   }}
                 />
               </div>
